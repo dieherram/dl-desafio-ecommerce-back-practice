@@ -1,12 +1,12 @@
-CREATE TABLE Usuario (
-    usuario_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     email VARCHAR(255) UNIQUE,
-    contraseña VARCHAR(255),
-    dirección VARCHAR(255),
-    teléfono VARCHAR(20),
-    rol ENUM('cliente', 'administrador')
+    password VARCHAR(255),
+    direccion VARCHAR(255),
+    telefono VARCHAR(20),
+    rol VARCHAR(20)
 );
 
 CREATE TABLE Producto (
