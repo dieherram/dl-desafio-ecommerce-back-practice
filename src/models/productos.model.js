@@ -50,9 +50,25 @@ const deleteProductById = async (id) => {
   }
 }
 
+// Crear un nuevo producto
+const addProduct = async (productData) => {
+  const { nombre, descripcion, precio, stock, categoria_id } = productData
+  try {
+    const result = await pool.query(
+      'INSERT INTO producto (nombre, descripcion, precio, stock, categoria_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nombre, descripcion, precio, stock, categoria_id]
+    )
+    return result.rows[0]
+  } catch (error) {
+    console.error('Error creating product in model:', error)
+    throw error
+  }
+}
+
 export const productModel = {
   getAllProducts,
   getProductById,
   updateProductById,
-  deleteProductById
+  deleteProductById,
+  addProduct
 }

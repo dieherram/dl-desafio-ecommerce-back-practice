@@ -3,9 +3,10 @@ import { productController } from '../controllers/productos.controller.js'
 
 const router = Router()
 
-router.get('/productos', productController.getAllProducts)
-router.get('/productos/:id', productController.getProductById)
-router.put('/productos/:id', productController.updateProductById)
-router.delete('/productos/:id', productController.deleteProductById)
+router.get('/products', productController.getAllProducts)
+router.get('/products/:id', productController.getProductById)
+router.post('/products', productController.createProduct)
+router.put('/products/:id', productController.updateProductById)
+router.delete('/products/:id', productController.deleteProductById)
 
 export default router

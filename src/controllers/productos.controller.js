@@ -57,9 +57,22 @@ const deleteProductById = async (req, res) => {
   }
 }
 
+// Crear un nuevo producto
+const createProduct = async (req, res) => {
+  const { nombre, descripcion, precio, stock, categoria_id } = req.body
+  try {
+    const newProduct = await productModel.addProduct({ nombre, descripcion, precio, stock, categoria_id })
+    return res.status(201).json(newProduct)
+  } catch (error) {
+    console.error('Error creating product:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 export const productController = {
   getAllProducts,
   getProductById,
   updateProductById,
-  deleteProductById
+  deleteProductById,
+  createProduct
 }
