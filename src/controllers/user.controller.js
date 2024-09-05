@@ -2,6 +2,7 @@ import 'dotenv/config'
 import bcript from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { userModel } from '../models/user.model.js'
+import { getPayload } from '../lib/utils/auth.utils.js'
 
 const signup = async (req, res) => {
   const { email, password } = req.body
@@ -34,8 +35,22 @@ const signup = async (req, res) => {
       return res.status(500).json({ message: 'Failed to create user' })
     }
 
-    // 6. Respuesta exitosa (puedes generar un token JWT aquí si lo necesitas)
-    return res.status(201).json({ message: 'User created successfully' })
+    // 6. Respuesta exitosa (generaramos un token JWT)
+    const payload = {
+      email: newUser.email,
+      user_id: newUser.id,
+      rol: newUser.rol,
+      nombre: newUser.nombre,
+      apellido: newUser.apellido,
+      direccion: newUser.direccion,
+      telefono: newUser.telefono
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
+    return res.status(201).json({
+      message: 'User created successfully',
+      token,
+      email: newUser.email
+    })
   } catch (error) {
     console.error('Error during signup:', error)
     return res.status(500).json({ message: 'Internal server error' })
@@ -65,9 +80,7 @@ const login = async (req, res) => {
       direccion: user.direccion,
       telefono: user.telefono
     }
-    console.log(payload)
     // creación del token
-    console.log(process.env.JWT_SECRET)
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     return res.status(200).json({
@@ -81,18 +94,37 @@ const login = async (req, res) => {
   }
 }
 
-const usuarios = async (req, res) => {
+const update = async (req, res) => {
+  const payload = getPayload(req)
+  console.log(payload)
+  if (!payload) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  const { email, password, rol, nombre, apellido, direccion, telefono } = req.body
   try {
-    const users = await userModel.findOneEmail(req.user.email)
-    return res.status(200).json(users)
+    const user = await userModel.update(payload.user_id, { email, password, rol, nombre, apellido, direccion, telefono })
+    return res.status(200).json(user)
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
+const getUsuario = async (req, res) => {
+  const { id } = req.params
+  try {
+    const user = await userModel.findById(id)
+    return res.status(200).json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: error.message })
+  }
+}
+
 export const userController = {
   login,
   signup,
-  usuarios
+  update,
+  getUsuario
 }
