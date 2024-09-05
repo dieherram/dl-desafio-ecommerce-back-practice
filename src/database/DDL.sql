@@ -4,6 +4,7 @@ CREATE TABLE usuario (
     apellido VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     password VARCHAR(255),
+    img VARCHAR(255),
     direccion VARCHAR(255),
     telefono VARCHAR(20),
     rol VARCHAR(20)
