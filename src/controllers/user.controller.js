@@ -141,7 +141,8 @@ const login = async (req, res) => {
       nombre: user.nombre,
       apellido: user.apellido,
       direccion: user.direccion,
-      telefono: user.telefono
+      telefono: user.telefono,
+      img: user.img
     }
     // creación del token
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
@@ -177,6 +178,8 @@ const update = async (req, res) => {
 
 const getUsuario = async (req, res) => {
   try {
+    console.log('Token')
+    console.log(getPayload(req))
     const user = await userModel.findById(getPayload(req).user_id)
     return res.status(200).json(user)
   } catch (error) {
