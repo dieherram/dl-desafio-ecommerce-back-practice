@@ -3,7 +3,7 @@ import express from 'express'
 import 'dotenv/config'
 import consoleLogger from './middleware/console.logger.js'
 import userRoute from './routes/user.route.js'
-import productRoute from './routes/productos.routes.js'
+import productRoute from './routes/productos.route.js'
 
 const app = express()
 app.use(cors())

@@ -1,4 +1,4 @@
-CREATE TABLE usuario (
+CREATE TABLE Usuario (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
     apellido VARCHAR(255),
@@ -10,32 +10,33 @@ CREATE TABLE usuario (
 );
 
 CREATE TABLE Producto (
-    producto_id INT PRIMARY KEY AUTO_INCREMENT,
+    producto_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
     descripción TEXT,
     precio DECIMAL(10, 2),
     stock INT,
     categoría_id INT,
+    favorito BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (categoría_id) REFERENCES Categoría(categoría_id)
 );
 
 CREATE TABLE Categoría (
-    categoría_id INT PRIMARY KEY AUTO_INCREMENT,
+    categoría_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
     descripción TEXT
 );
 
 CREATE TABLE Pedido (
-    pedido_id INT PRIMARY KEY AUTO_INCREMENT,
+    pedido_id SERIAL PRIMARY KEY,
     usuario_id INT,
-    fecha_creación DATETIME,
-    estado ENUM('pendiente', 'enviado', 'entregado', 'cancelado'),
+    fecha_creación TIMESTAMP,
+    estado VARCHAR(20) CHECK (estado IN ('pendiente', 'enviado', 'entregado', 'cancelado')),
     total DECIMAL(10, 2),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
 
 CREATE TABLE DetallePedido (
-    detalle_id INT PRIMARY KEY AUTO_INCREMENT,
+    detalle_id SERIAL PRIMARY KEY,
     pedido_id INT,
     producto_id INT,
     cantidad INT,
@@ -46,14 +47,14 @@ CREATE TABLE DetallePedido (
 );
 
 CREATE TABLE Carrito (
-    carrito_id INT PRIMARY KEY AUTO_INCREMENT,
+    carrito_id SERIAL PRIMARY KEY,
     usuario_id INT,
-    fecha_creación DATETIME,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    fecha_creación TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
 
 CREATE TABLE DetalleCarrito (
-    detalle_id INT PRIMARY KEY AUTO_INCREMENT,
+    detalle_id SERIAL PRIMARY KEY,
     carrito_id INT,
     producto_id INT,
     cantidad INT,
@@ -62,17 +63,17 @@ CREATE TABLE DetalleCarrito (
 );
 
 CREATE TABLE MétodoPago (
-    método_pago_id INT PRIMARY KEY AUTO_INCREMENT,
+    método_pago_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255)
 );
 
 CREATE TABLE DirecciónEnvío (
-    dirección_envío_id INT PRIMARY KEY AUTO_INCREMENT,
+    dirección_envío_id SERIAL PRIMARY KEY,
     usuario_id INT,
     dirección VARCHAR(255),
     ciudad VARCHAR(255),
     estado_provincia VARCHAR(255),
     código_postal VARCHAR(10),
     país VARCHAR(255),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
