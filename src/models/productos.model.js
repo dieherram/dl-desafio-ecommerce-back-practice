@@ -3,7 +3,7 @@ import { getDatabaseError } from '../lib/errors/database.error.js'
 
 // Obtener todos los productos
 const getAllProducts = async () => {
-  const query = 'SELECT * FROM producto'
+  const query = 'SELECT * FROM Producto'
   try {
     const { rows } = await pool.query(query)
     return rows
@@ -14,7 +14,7 @@ const getAllProducts = async () => {
 
 // Obtener producto por ID
 const getProductById = async (id) => {
-  const query = 'SELECT * FROM producto WHERE producto_id = $1'
+  const query = 'SELECT * FROM Producto WHERE producto_id = $1'
   try {
     const { rows } = await pool.query(query, [id])
     return rows[0]
@@ -24,13 +24,13 @@ const getProductById = async (id) => {
 }
 
 // Actualizar producto por ID
-const updateProductById = async (id, { nombre, descripcion, precio, stock, categoria_id }) => {
+const updateProductById = async (id, { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito }) => {
   const query = `
-    UPDATE producto 
-    SET nombre = $1, descripcion = $2, precio = $3, stock = $4, categoria_id = $5
-    WHERE producto_id = $6 RETURNING *
-  `
-  const values = [nombre, descripcion, precio, stock, categoria_id, id]
+    UPDATE Producto 
+    SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, imagen_url = $6, categoria_id = $7, favorito = $8
+    WHERE producto_id = $9 RETURNING *
+  `;
+  const values = [modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito, id]
   try {
     const { rows } = await pool.query(query, values)
     return rows[0]
@@ -41,7 +41,7 @@ const updateProductById = async (id, { nombre, descripcion, precio, stock, categ
 
 // Eliminar producto por ID
 const deleteProductById = async (id) => {
-  const query = 'DELETE FROM producto WHERE producto_id = $1 RETURNING *'
+  const query = 'DELETE FROM Producto WHERE producto_id = $1 RETURNING *'
   try {
     const { rows } = await pool.query(query, [id])
     return rows[0]
@@ -52,11 +52,11 @@ const deleteProductById = async (id) => {
 
 // Crear un nuevo producto
 const addProduct = async (productData) => {
-  const { nombre, descripcion, precio, stock, categoria_id } = productData
+  const { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito } = productData
   try {
     const result = await pool.query(
-      'INSERT INTO producto (nombre, descripcion, precio, stock, categoria_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [nombre, descripcion, precio, stock, categoria_id]
+      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, imagen_url, categoria_id, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito]
     )
     return result.rows[0]
   } catch (error) {
@@ -65,10 +65,22 @@ const addProduct = async (productData) => {
   }
 }
 
+// Cambiar el estado de "like" o "favorito" del producto
+const toggleLikeProduct = async (id, isLiked) => {
+  const query = 'UPDATE Producto SET favorito = $1 WHERE producto_id = $2 RETURNING *'
+  try {
+    const { rows } = await pool.query(query, [isLiked, id])
+    return rows[0]
+  } catch (error) {
+    throw new Error('Database error')
+  }
+}
+
 export const productModel = {
   getAllProducts,
   getProductById,
   updateProductById,
   deleteProductById,
-  addProduct
+  addProduct,
+  toggleLikeProduct
 }

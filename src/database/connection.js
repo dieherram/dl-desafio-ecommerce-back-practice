@@ -1,6 +1,6 @@
-import pkg from 'pg'
+import pg from 'pg'
 import 'dotenv/config'
-const { Pool } = pkg
+const { Pool } = pg
 
 export const pool = new Pool({
   user: process.env.DB_USER,

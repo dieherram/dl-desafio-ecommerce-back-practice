@@ -1,4 +1,4 @@
-INSERT INTO Categoría (categoría_id, nombre, descripción)
+INSERT INTO Categoria (categoria_id, nombre, descripcion)
 VALUES
   (DEFAULT, 'Sedan', 'Vehículo de cuatro puertas con carrocería tipo sedán'),
   (DEFAULT, 'SUV', 'Vehículo utilitario deportivo, ideal para todo terreno'),
@@ -7,7 +7,7 @@ VALUES
   (DEFAULT, 'Híbrido', 'Vehículo que combina un motor de combustión interna y uno eléctrico'),
   (DEFAULT, 'Eléctrico', 'Vehículo propulsado exclusivamente por energía eléctrica');
 
-INSERT INTO Producto (producto_id, nombre, descripción, precio, stock, categoría_id, favorito)
+INSERT INTO Producto (producto_id, nombre, descripcion, precio, stock, categoria_id, favorito)
 VALUES
   (DEFAULT, 'Toyota Corolla', 'Sedan compacto y eficiente', 2000000, 10, 1, FALSE),
   (DEFAULT, 'Honda CR-V', 'SUV familiar y versátil', 2500000, 15, 2, TRUE),
