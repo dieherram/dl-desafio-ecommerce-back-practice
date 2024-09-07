@@ -2,6 +2,7 @@ import 'dotenv/config'
 import bcript from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { userModel } from '../models/user.model.js'
+import { getPayload } from '../lib/utils/auth.utils.js'
 
 const signup = async (req, res) => {
   const { email, password } = req.body
@@ -34,10 +35,87 @@ const signup = async (req, res) => {
       return res.status(500).json({ message: 'Failed to create user' })
     }
 
-    // 6. Respuesta exitosa (puedes generar un token JWT aquí si lo necesitas)
-    return res.status(201).json({ message: 'User created successfully' })
+    // 6. Respuesta exitosa (generaramos un token JWT)
+    const payload = {
+      email: newUser.email,
+      user_id: newUser.id,
+      rol: newUser.rol,
+      nombre: newUser.nombre,
+      apellido: newUser.apellido,
+      direccion: newUser.direccion,
+      telefono: newUser.telefono
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
+    return res.status(201).json({
+      message: 'User created successfully',
+      token,
+      email: newUser.email
+    })
   } catch (error) {
     console.error('Error during signup:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+const profile = async (req, res) => {
+  const payload = getPayload(req)
+
+  if (!payload) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  try {
+    // 1. Get the filename from req.file
+    console.log(req.file)
+    let imgFilename = null
+    if (req.file) {
+      imgFilename = req.file.filename
+    } else {
+      return res.status(400).json({ message: 'No image file provided' })
+    }
+
+    // 2. Update the user in the database
+    const updatedUser = await userModel.update(payload.user_id, { img: imgFilename })
+
+    // 3. Handle potential errors from userModel.update
+    if (!updatedUser) {
+      return res.status(500).json({ message: 'Failed to update profile' })
+    }
+
+    return res.status(200).json({
+      message: 'Profile updated successfully',
+      user: updatedUser // Optionally send back the updated user data
+    })
+  } catch (error) {
+    console.error('Error updating profile:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+const getProfilePicture = async (req, res) => {
+  const payload = getPayload(req)
+
+  if (!payload) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  try {
+    const user = await userModel.findById(payload.user_id)
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // Assuming 'img' field in the database stores the image path
+    const imagePath = user.img
+
+    if (!imagePath) {
+      return res.status(404).json({ message: 'Profile picture not found' })
+    }
+
+    // Send the image file as a response
+    return res.sendFile(imagePath, { root: '.' }) // Adjust the root path if necessary
+  } catch (error) {
+    console.error('Error fetching profile picture:', error)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
@@ -63,11 +141,10 @@ const login = async (req, res) => {
       nombre: user.nombre,
       apellido: user.apellido,
       direccion: user.direccion,
-      telefono: user.telefono
+      telefono: user.telefono,
+      img: user.img
     }
-    console.log(payload)
     // creación del token
-    console.log(process.env.JWT_SECRET)
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     return res.status(200).json({
@@ -81,18 +158,41 @@ const login = async (req, res) => {
   }
 }
 
-const usuarios = async (req, res) => {
+const update = async (req, res) => {
+  const payload = getPayload(req)
+  console.log(payload)
+  if (!payload) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  const { email, password, rol, nombre, apellido, direccion, telefono, img } = req.body
+
   try {
-    const users = await userModel.findOneEmail(req.user.email)
-    return res.status(200).json(users)
+    const user = await userModel.update(payload.user_id, { email, password, rol, nombre, apellido, direccion, telefono, img })
+    return res.status(200).json(user)
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
+const getUsuario = async (req, res) => {
+  try {
+    console.log('Token')
+    console.log(getPayload(req))
+    const user = await userModel.findById(getPayload(req).user_id)
+    return res.status(200).json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: error.message })
+  }
+}
+
 export const userController = {
   login,
   signup,
-  usuarios
+  update,
+  profile,
+  getProfilePicture,
+  getUsuario
 }

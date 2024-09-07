@@ -10,11 +10,11 @@ app.use(cors())
 app.use(express.json())
 app.use(consoleLogger)
 app.use('/', userRoute)
+app.use('/uploads', express.static('public/data/uploads'))
 app.use('/', productRoute)
 
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-    })
-
+  console.log(`Server is running on port ${PORT}`)
+})
