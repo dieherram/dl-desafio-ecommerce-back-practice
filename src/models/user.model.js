@@ -23,12 +23,12 @@ const findById = async (id) => {
   }
 }
 
-const create = async ({ email, password, rol }) => {
+const create = async ({ nombre, apellido, email, password, rol }) => {
   console.log('IN CREATE')
   const query =
-    'INSERT INTO usuario (email, password, rol ) VALUES ($1, $2, $3) RETURNING *'
+    'INSERT INTO usuario (nombre, apellido, email, password, rol ) VALUES ($1, $2, $3, $4, $5) RETURNING *'
   try {
-    const { rows } = await pool.query(query, [email, password, rol])
+    const { rows } = await pool.query(query, [nombre, apellido, email, password, rol])
     console.log(rows[0])
     return rows[0]
   } catch (error) {

@@ -11,25 +11,27 @@ CREATE TABLE Usuario (
     rol VARCHAR(20)
 );
 
--- Crear tabla Categoria
-CREATE TABLE Categoria (
-    categoria_id SERIAL PRIMARY KEY,
-    nombre VARCHAR(255),
-    descripcion TEXT
-);
 
 -- Crear tabla Producto
 CREATE TABLE Producto (
-    producto_id SERIAL PRIMARY KEY,
-    modelo VARCHAR(255),
-    marca VARCHAR(255),
+    id SERIAL PRIMARY KEY,
+    marca VARCHAR(50),
+    modelo VARCHAR(50),
     descripcion TEXT,
-    precio DECIMAL(10, 2),
+    img VARCHAR(512),
+    precio NUMERIC(10,2),
     stock INT,
-    imagen_url TEXT,
-    categoria_id INT,
-    favorito BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (categoria_id) REFERENCES Categoria(categoria_id)
+    fecha_creacion TIMESTAMP DEFAULT NOW(),
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
+);
+
+
+CREATE TABLE Favorito (
+    usuario_id INT,
+    producto_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
+    FOREIGN KEY (producto_id) REFERENCES Producto(id)
 );
 
 -- Crear tabla Pedido

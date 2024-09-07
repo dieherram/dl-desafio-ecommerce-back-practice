@@ -5,11 +5,11 @@ import { userModel } from '../models/user.model.js'
 import { getPayload } from '../lib/utils/auth.utils.js'
 
 const signup = async (req, res) => {
-  const { email, password } = req.body
+  const { nombre, apellido, email, password } = req.body
 
   try {
     // 1. Validaciones básicas (puedes agregar más según tus necesidades)
-    if (!email || !password) {
+    if (!email || !password || !nombre || !apellido) {
       return res.status(400).json({ message: 'Email and password are required' })
     }
 
@@ -25,11 +25,13 @@ const signup = async (req, res) => {
 
     // 4. Crear el usuario en la base de datos (usando el modelo)
     const newUser = await userModel.create({
+      nombre,
+      apellido,
       email: email.toLowerCase(), // Guardar email en minúsculas
       password: hashedPassword,
       rol: 'user'
     })
-
+    console.log(newUser)
     // 5. Manejo de errores del modelo
     if (!newUser) {
       return res.status(500).json({ message: 'Failed to create user' })
@@ -49,7 +51,7 @@ const signup = async (req, res) => {
     return res.status(201).json({
       message: 'User created successfully',
       token,
-      email: newUser.email
+      user: newUser
     })
   } catch (error) {
     console.error('Error during signup:', error)
@@ -135,7 +137,7 @@ const login = async (req, res) => {
 
     // creación del payload
     const payload = {
-      email,
+      email: user.email,
       user_id: user.id,
       rol: user.rol,
       nombre: user.nombre,
@@ -144,13 +146,14 @@ const login = async (req, res) => {
       telefono: user.telefono,
       img: user.img
     }
+
     // creación del token
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     return res.status(200).json({
       message: 'Login successfully',
       token,
-      email
+      user
     })
   } catch (error) {
     console.log(error)
