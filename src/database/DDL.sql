@@ -1,4 +1,5 @@
-CREATE TABLE usuario (
+-- Crear tabla Usuario
+CREATE TABLE Usuario (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
     apellido VARCHAR(255),
@@ -10,33 +11,40 @@ CREATE TABLE usuario (
     rol VARCHAR(20)
 );
 
-CREATE TABLE Producto (
-    producto_id INT PRIMARY KEY AUTO_INCREMENT,
+-- Crear tabla Categoria
+CREATE TABLE Categoria (
+    categoria_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255),
-    descripción TEXT,
+    descripcion TEXT
+);
+
+-- Crear tabla Producto
+CREATE TABLE Producto (
+    producto_id SERIAL PRIMARY KEY,
+    modelo VARCHAR(255),
+    marca VARCHAR(255),
+    descripcion TEXT,
     precio DECIMAL(10, 2),
     stock INT,
-    categoría_id INT,
-    FOREIGN KEY (categoría_id) REFERENCES Categoría(categoría_id)
+    imagen_url TEXT,
+    categoria_id INT,
+    favorito BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (categoria_id) REFERENCES Categoria(categoria_id)
 );
 
-CREATE TABLE Categoría (
-    categoría_id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(255),
-    descripción TEXT
-);
-
+-- Crear tabla Pedido
 CREATE TABLE Pedido (
-    pedido_id INT PRIMARY KEY AUTO_INCREMENT,
+    pedido_id SERIAL PRIMARY KEY,
     usuario_id INT,
-    fecha_creación DATETIME,
-    estado ENUM('pendiente', 'enviado', 'entregado', 'cancelado'),
+    fecha_creacion TIMESTAMP,
+    estado VARCHAR(20) CHECK (estado IN ('pendiente', 'enviado', 'entregado', 'cancelado')),
     total DECIMAL(10, 2),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
 
+-- Crear tabla DetallePedido
 CREATE TABLE DetallePedido (
-    detalle_id INT PRIMARY KEY AUTO_INCREMENT,
+    detalle_id SERIAL PRIMARY KEY,
     pedido_id INT,
     producto_id INT,
     cantidad INT,
@@ -46,15 +54,17 @@ CREATE TABLE DetallePedido (
     FOREIGN KEY (producto_id) REFERENCES Producto(producto_id)
 );
 
+-- Crear tabla Carrito
 CREATE TABLE Carrito (
-    carrito_id INT PRIMARY KEY AUTO_INCREMENT,
+    carrito_id SERIAL PRIMARY KEY,
     usuario_id INT,
-    fecha_creación DATETIME,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    fecha_creacion TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
 
+-- Crear tabla DetalleCarrito
 CREATE TABLE DetalleCarrito (
-    detalle_id INT PRIMARY KEY AUTO_INCREMENT,
+    detalle_id SERIAL PRIMARY KEY,
     carrito_id INT,
     producto_id INT,
     cantidad INT,
@@ -62,18 +72,20 @@ CREATE TABLE DetalleCarrito (
     FOREIGN KEY (producto_id) REFERENCES Producto(producto_id)
 );
 
-CREATE TABLE MétodoPago (
-    método_pago_id INT PRIMARY KEY AUTO_INCREMENT,
+-- Crear tabla MetodoPago
+CREATE TABLE MetodoPago (
+    metodo_pago_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255)
 );
 
-CREATE TABLE DirecciónEnvío (
-    dirección_envío_id INT PRIMARY KEY AUTO_INCREMENT,
+-- Crear tabla DireccionEnvio
+CREATE TABLE DireccionEnvio (
+    direccion_envio_id SERIAL PRIMARY KEY,
     usuario_id INT,
-    dirección VARCHAR(255),
+    direccion VARCHAR(255),
     ciudad VARCHAR(255),
     estado_provincia VARCHAR(255),
-    código_postal VARCHAR(10),
-    país VARCHAR(255),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
+    codigo_postal VARCHAR(10),
+    pais VARCHAR(255),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
 );
