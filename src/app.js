@@ -10,6 +10,7 @@ app.use(cors())
 app.use(express.json())
 app.use(consoleLogger)
 app.use('/', userRoute)
+app.use('/', productRoute)
 app.use('/uploads', express.static('public/data/uploads'))
 app.use('/', productRoute)
 
