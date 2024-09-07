@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 app.use(consoleLogger)
 app.use('/', userRoute)
-app.use('/api', productRoute)
+app.use('/', productRoute)
 
 const PORT = process.env.PORT || 5000
 

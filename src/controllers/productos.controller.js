@@ -10,6 +10,7 @@ const getAllProducts = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
+console.log(getAllProducts)
 
 // Obtener producto por ID
 const getProductById = async (req, res) => {
