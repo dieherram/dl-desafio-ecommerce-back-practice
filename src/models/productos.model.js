@@ -27,7 +27,7 @@ const getProductById = async (id) => {
 const updateProductById = async (id, { modelo, marca, descripcion, precio, stock, img, categoria, favorito }) => {
   const query = `
     UPDATE Producto 
-    SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, img = $6, categoria_id = $7, favorito = $8
+    SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, img = $6, categoria = $7, favorito = $8
     WHERE producto_id = $9 RETURNING *
   `
   const values = [modelo, marca, descripcion, precio, stock, img, categoria, favorito, id]
@@ -55,7 +55,7 @@ const addProduct = async (productData) => {
   const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = productData
   try {
     const result = await pool.query(
-      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria_id, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
       [modelo, marca, descripcion, precio, stock, img, categoria, favorito]
     )
     return result.rows[0]

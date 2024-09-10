@@ -17,18 +17,19 @@ CREATE TABLE Categoria (
     descripcion TEXT
 );
 
--- Crear tabla Producto
 CREATE TABLE Producto (
     id SERIAL PRIMARY KEY,
-    marca VARCHAR(50),
-    modelo VARCHAR(50),
+    marca VARCHAR(250),
+    modelo VARCHAR(250),
     descripcion TEXT,
-    precio DECIMAL(10, 2),
+    img VARCHAR(512),
+    precio NUMERIC(10,2),
     stock INT,
-    imagen_url TEXT,
-    categoria_id INT,
+    fecha_creacion TIMESTAMP DEFAULT NOW(),
     favorito BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (categoria_id) REFERENCES Categoria(categoria_id)
+	categoria VARCHAR(250),
+    id_usuario INT,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
 );
 
 -- Crear tabla Pedido
