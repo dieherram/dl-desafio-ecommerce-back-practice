@@ -24,13 +24,13 @@ const getProductById = async (id) => {
 }
 
 // Actualizar producto por ID
-const updateProductById = async (id, { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito }) => {
+const updateProductById = async (id, { modelo, marca, descripcion, precio, stock, img, categoria, favorito }) => {
   const query = `
     UPDATE Producto 
-    SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, imagen_url = $6, categoria_id = $7, favorito = $8
+    SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, img = $6, categoria_id = $7, favorito = $8
     WHERE producto_id = $9 RETURNING *
-  `;
-  const values = [modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito, id]
+  `
+  const values = [modelo, marca, descripcion, precio, stock, img, categoria, favorito, id]
   try {
     const { rows } = await pool.query(query, values)
     return rows[0]
@@ -52,11 +52,11 @@ const deleteProductById = async (id) => {
 
 // Crear un nuevo producto
 const addProduct = async (productData) => {
-  const { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito } = productData
+  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = productData
   try {
     const result = await pool.query(
-      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, imagen_url, categoria_id, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito]
+      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria_id, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [modelo, marca, descripcion, precio, stock, img, categoria, favorito]
     )
     return result.rows[0]
   } catch (error) {
