@@ -30,9 +30,9 @@ const getProductById = async (req, res) => {
 // Actualizar producto por ID
 const updateProductById = async (req, res) => {
   const { id } = req.params
-  const { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito } = req.body;
+  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = req.body
   try {
-    const updatedProduct = await productModel.updateProductById(id, { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito });
+    const updatedProduct = await productModel.updateProductById(id, { modelo, marca, descripcion, precio, stock, img, categoria, favorito })
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' })
     }
@@ -60,9 +60,10 @@ const deleteProductById = async (req, res) => {
 
 // Crear un nuevo producto
 const createProduct = async (req, res) => {
-  const { modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito } = req.body
+  console.log(req.body)
+  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = req.body
   try {
-    const newProduct = await productModel.addProduct({ modelo, marca, descripcion, precio, stock, imagen_url, categoria, favorito })
+    const newProduct = await productModel.addProduct({ modelo, marca, descripcion, precio, stock, img, categoria, favorito })
     return res.status(201).json(newProduct)
   } catch (error) {
     console.error('Error creating product:', error)
