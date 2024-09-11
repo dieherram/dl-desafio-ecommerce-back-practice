@@ -23,6 +23,21 @@ const getProductById = async (id) => {
   }
 }
 
+// Crear un nuevo producto
+const addProduct = async (productData) => {
+  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito, userId } = productData
+  try {
+    const result = await pool.query(
+      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria, favorito, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [modelo, marca, descripcion, precio, stock, img, categoria, favorito, userId]
+    )
+    return result.rows[0]
+  } catch (error) {
+    console.error('Error creating product in model:', error)
+    throw error
+  }
+}
+
 // Actualizar producto por ID
 const updateProductById = async (id, { modelo, marca, descripcion, precio, stock, img, categoria, favorito }) => {
   const query = `
@@ -41,7 +56,7 @@ const updateProductById = async (id, { modelo, marca, descripcion, precio, stock
 
 // Eliminar producto por ID
 const deleteProductById = async (id) => {
-  const query = 'DELETE FROM Producto WHERE id = $1 RETURNING *'
+  const query = 'DELETE FROM Producto WHERE producto_id = $1 RETURNING *'
   try {
     const { rows } = await pool.query(query, [id])
     return rows[0]
@@ -50,37 +65,10 @@ const deleteProductById = async (id) => {
   }
 }
 
-// Crear un nuevo producto
-const addProduct = async (productData) => {
-  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = productData
-  try {
-    const result = await pool.query(
-      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria, favorito) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [modelo, marca, descripcion, precio, stock, img, categoria, favorito]
-    )
-    return result.rows[0]
-  } catch (error) {
-    console.error('Error creating product in model:', error)
-    throw error
-  }
-}
-
-// Cambiar el estado de "like" o "favorito" del producto
-const toggleLikeProduct = async (id, isLiked) => {
-  const query = 'UPDATE Producto SET favorito = $1 WHERE producto_id = $2 RETURNING *'
-  try {
-    const { rows } = await pool.query(query, [isLiked, id])
-    return rows[0]
-  } catch (error) {
-    throw new Error('Database error')
-  }
-}
-
 export const productModel = {
   getAllProducts,
   getProductById,
-  updateProductById,
-  deleteProductById,
   addProduct,
-  toggleLikeProduct
+  updateProductById,
+  deleteProductById
 }
