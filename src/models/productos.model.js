@@ -41,7 +41,7 @@ const updateProductById = async (id, { modelo, marca, descripcion, precio, stock
 
 // Eliminar producto por ID
 const deleteProductById = async (id) => {
-  const query = 'DELETE FROM Producto WHERE producto_id = $1 RETURNING *'
+  const query = 'DELETE FROM Producto WHERE id = $1 RETURNING *'
   try {
     const { rows } = await pool.query(query, [id])
     return rows[0]
