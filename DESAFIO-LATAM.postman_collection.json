@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "e0dfd0de-60b0-43a7-bba2-d912e1016db9",
+		"name": "DESAFIO-LATAM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4489102"
+	},
+	"item": [
+		{
+			"name": "locahost:3000/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"mossmax62@gmail.com\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "locahost:3000/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"mossmax62@gmail.com\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vc3NtYXg2MkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJyb2wiOiJ1c2VyIiwibm9tYnJlIjpudWxsLCJhcGVsbGlkbyI6bnVsbCwiZGlyZWNjaW9uIjpudWxsLCJ0ZWxlZm9ubyI6bnVsbCwiaWF0IjoxNzI1NTAzMTY0LCJleHAiOjE3MjU1MDY3NjR9.DkOVBeCLwlUS8WGM6VZXq1EXuSZSKjHJz6tdRllIEmk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"apellido\":\"Mussuto\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/usuario/profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vc3NtYXg2MkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJyb2wiOiJ1c2VyIiwibm9tYnJlIjpudWxsLCJhcGVsbGlkbyI6bnVsbCwiZGlyZWNjaW9uIjpudWxsLCJ0ZWxlZm9ubyI6bnVsbCwiaWF0IjoxNzI1NTAzMTY0LCJleHAiOjE3MjU1MDY3NjR9.DkOVBeCLwlUS8WGM6VZXq1EXuSZSKjHJz6tdRllIEmk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "uploaded_file",
+							"type": "file",
+							"src": "/Users/max/Downloads/Max - Sin fondo.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/usuario/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuario",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vc3NtYXg2MkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJyb2wiOiJ1c2VyIiwibm9tYnJlIjoiTWF4aW1pbGlhbm8iLCJhcGVsbGlkbyI6Ik11c3N1dG8iLCJkaXJlY2Npb24iOm51bGwsInRlbGVmb25vIjpudWxsLCJpbWciOiIxMzdiZTM2NDZlYjg4OWIyYWZmMjA1NmE5YThlM2Q0ZSIsImlhdCI6MTcyNTUwNjQzOSwiZXhwIjoxNzI1NTEwMDM5fQ.QVrPkYWjqrV2XvNhsnsw-9NyBObrFRchFnb8MQe2slI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/products",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vc3NtYXg2MkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJyb2wiOiJ1c2VyIiwibm9tYnJlIjoiTWF4aW1pbGlhbm8iLCJhcGVsbGlkbyI6Ik11c3N1dG8iLCJkaXJlY2Npb24iOm51bGwsInRlbGVmb25vIjpudWxsLCJpbWciOiIxMzdiZTM2NDZlYjg4OWIyYWZmMjA1NmE5YThlM2Q0ZSIsImlhdCI6MTcyNTUwNjQzOSwiZXhwIjoxNzI1NTEwMDM5fQ.QVrPkYWjqrV2XvNhsnsw-9NyBObrFRchFnb8MQe2slI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"modelo\": \"qwe\",\n    \"marca\": \"qwe\",\n    \"descripcion\": \"\",\n    \"precio\": 123,\n    \"stock\": 123,\n    \"img\": \"qwe\",\n    \"categoria\": \"qwe\",\n    \"favorito\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://back-9x5b.onrender.com/products",
+					"protocol": "https",
+					"host": [
+						"back-9x5b",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
