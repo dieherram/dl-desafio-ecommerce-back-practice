@@ -1,3 +1,4 @@
+import { getPayload } from '../lib/utils/auth.utils.js'
 import { productModel } from '../models/productos.model.js'
 
 // Obtener todos los productos (sin validación de usuario)
@@ -26,11 +27,12 @@ const getProductById = async (req, res) => {
   }
 }
 
-// Crear un nuevo producto (requiere ID de usuario)
 const createProduct = async (req, res) => {
   const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = req.body
-  const userId = req.user.id
-
+  const payload = getPayload(req)
+  const user_id = payload.user_id
+  // console.log(payload)
+  console.log(req.body)
   try {
     const newProduct = await productModel.addProduct({
       modelo,
@@ -41,7 +43,7 @@ const createProduct = async (req, res) => {
       img,
       categoria,
       favorito,
-      userId // Asigna el ID del usuario al producto
+      user_id
     })
     return res.status(201).json(newProduct)
   } catch (error) {
