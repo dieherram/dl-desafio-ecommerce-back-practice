@@ -8,7 +8,10 @@ export const pool = new Pool({
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   port: process.env.DB_PORT,
-  allowExitOnIdle: true
+  allowExitOnIdle: true,
+  ssl: {
+    rejectUnauthorized: false
+  }
 })
 
 const check = async () => {

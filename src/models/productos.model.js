@@ -25,11 +25,14 @@ const getProductById = async (id) => {
 
 // Crear un nuevo producto
 const addProduct = async (productData) => {
-  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito, userId } = productData
+  const { modelo, marca, descripcion, precio, stock, img, categoria, favorito, user_id } = productData
+  console.log('addProduct')
+  console.log(user_id)
   try {
+    console.log('try addProduct')
     const result = await pool.query(
-      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria, favorito, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [modelo, marca, descripcion, precio, stock, img, categoria, favorito, userId]
+      'INSERT INTO Producto (modelo, marca, descripcion, precio, stock, img, categoria, favorito, id_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [modelo, marca, descripcion, precio, stock, img, categoria, favorito, user_id]
     )
     return result.rows[0]
   } catch (error) {
