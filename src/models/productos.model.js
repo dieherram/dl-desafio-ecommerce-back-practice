@@ -14,7 +14,7 @@ const getAllProducts = async () => {
 
 // Obtener producto por ID
 const getProductById = async (id) => {
-  const query = 'SELECT * FROM Producto WHERE producto_id = $1'
+  const query = 'SELECT * FROM Producto WHERE id = $1'
   try {
     const { rows } = await pool.query(query, [id])
     return rows[0]
@@ -46,7 +46,7 @@ const updateProductById = async (id, { modelo, marca, descripcion, precio, stock
   const query = `
     UPDATE Producto 
     SET modelo = $1, marca = $2, descripcion = $3, precio = $4, stock = $5, img = $6, categoria = $7, favorito = $8
-    WHERE producto_id = $9 RETURNING *
+    WHERE id = $9 RETURNING *
   `
   const values = [modelo, marca, descripcion, precio, stock, img, categoria, favorito, id]
   try {
