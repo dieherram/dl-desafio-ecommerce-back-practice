@@ -56,7 +56,8 @@ const createProduct = async (req, res) => {
 const updateProductById = async (req, res) => {
   const { id } = req.params
   const { modelo, marca, descripcion, precio, stock, img, categoria, favorito } = req.body
-  const userId = req.user.id
+  const payload = getPayload(req)
+  const userId = payload.user_id
 
   try {
     // Verifica si el producto existe
@@ -66,7 +67,7 @@ const updateProductById = async (req, res) => {
     }
 
     // Verifica si el usuario tiene permiso para modificar el producto
-    if (product.userId !== userId) {
+    if (product.id_usuario !== userId) {
       return res.status(403).json({ message: 'Forbidden: You cannot modify this product' })
     }
 
@@ -81,7 +82,7 @@ const updateProductById = async (req, res) => {
       categoria,
       favorito
     })
-    
+
     return res.status(200).json(updatedProduct)
   } catch (error) {
     console.error('Error updating product:', error)
