@@ -8,7 +8,7 @@ export const authMiddleware = (req, res, next) => {
     return res.status(401).json({ error: 'Authorization header missing' })
   }
 
-  const token = authHeader.split(' ')[1] // Assuming "Bearer <token>" format
+  const token = authHeader.split(' ') // Assuming "Bearer <token>" format
 
   if (!token) {
     return res.status(401).json({ error: 'No token provided' })
