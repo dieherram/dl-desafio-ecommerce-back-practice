@@ -72,18 +72,20 @@ const updateProductById = async (req, res) => {
     }
 
     // Actualiza el producto
-    const updatedProduct = await productModel.updateProductById(id, {
-      modelo,
-      marca,
-      descripcion,
-      precio,
-      stock,
-      img,
-      categoria,
-      favorito
-    })
+    const updatedProduct = {
+      modelo: modelo || product.modelo,
+      marca: marca || product.marca,
+      descripcion: descripcion || product.descripcion,
+      precio: precio || product.precio,
+      stock: stock || product.stock,
+      img: img || product.img,
+      categoria: categoria || product.categoria,
+      favorito: favorito !== undefined ? favorito : product.favorito,
+    }
 
-    return res.status(200).json(updatedProduct)
+    const result = await productModel.updateProductById(id, updatedProduct)
+
+    return res.status(200).json(result)
   } catch (error) {
     console.error('Error updating product:', error)
     return res.status(500).json({ message: 'Internal server error' })
