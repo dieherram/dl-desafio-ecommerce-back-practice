@@ -7,7 +7,7 @@ const getPayloadFromToken = (req) => {
     return null
   }
 
-  const token = authHeader.split(' ')[1] // Assuming "Bearer <token>" format
+  const token = authHeader.split(' ') // Assuming "Bearer <token>" format
 
   if (!token) {
     return null
